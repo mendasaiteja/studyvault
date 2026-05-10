@@ -1,7 +1,6 @@
 import "dotenv/config";
 import express from "express";
 import dotenv from "dotenv";
-// dotenv.config();
 import cors from "cors";
 import connectDb from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
@@ -14,23 +13,24 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+dotenv.config({
+  path:"./.env"
+});
+
 app.use("/api/auth", authRoutes);
 app.use("/api/files", fileRouter);
 
-// const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
-// const startServer = async () => {
-//   app.listen(PORT,"http://127.0.0.1:3000/", () => {
-//     console.log(`Server running on port ${PORT}`);
-//   });
-// };
+const startServer = async () => {
+  app.on("error",(error)=>{
+    console.log("Error",error);
+    throw error;
+  })
 
-// startServer();
-
-connectDb();
-
-const PORT = 5000;
-
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+    connectDb();
+  });
+};
+startServer();

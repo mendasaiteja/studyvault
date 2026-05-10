@@ -1,9 +1,9 @@
 import { v2 as cloudinary } from "cloudinary";
 
-console.log("ENV CHECK:", {
-  name: process.env.CLOUD_NAME,
-  key: process.env.CLOUD_API_KEY,
-});
+// console.log("ENV CHECK:", {
+//   name: process.env.CLOUD_NAME,
+//   key: process.env.CLOUD_API_KEY,
+// });
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
