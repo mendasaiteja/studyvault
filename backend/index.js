@@ -5,17 +5,13 @@ import cors from "cors";
 import connectDb from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import fileRouter from "./routes/fileRoutes.js";
-import "../backend/config/cloudinary.js";
-import { protectgetfiles } from "./middleware/protectgetFiles.js";
-import { getFiles,getFilesByUser } from "./controllers/fileController.js";
+import "./config/cloudinary.js";
+import { getFiles,getMyUploads } from "./controllers/fileController.js";
 const app = express();
 
 app.use(express.json());
+app.use(express.urlencoded({extended:true}));
 app.use(cors());
-
-dotenv.config({
-  path:"./.env"
-});
 
 app.use("/api/auth", authRoutes);
 app.use("/api/files", fileRouter);
@@ -28,9 +24,10 @@ const startServer = async () => {
     throw error;
   })
 
-  app.listen(PORT, () => {
+  const server=app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
     connectDb();
   });
+  server.timeout=300000;
 };
 startServer();

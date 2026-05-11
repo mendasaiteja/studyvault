@@ -1,5 +1,6 @@
 import { User } from "../models/User.models.js";
 import verifyToken from "../services/jwtservice.js";
+
 const protect = async (req, res, next) => {
   try {
     const authorization = req.headers["authorization"];

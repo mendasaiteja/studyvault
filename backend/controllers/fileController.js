@@ -14,7 +14,7 @@ export const uploadFile = async (req, res) => {
       new Promise((resolve, reject) => {
         const stream = cloudinary.uploader.upload_stream(
           {
-            resource_type: "raw",
+            resource_type: "auto",
             folder: "studyvault",
           },
           (error, result) => {
@@ -27,21 +27,13 @@ export const uploadFile = async (req, res) => {
       });
 
     const result = await uploadFromBuffer();
-     // ✅ Preview URL (inline view)
-    const previewUrl = cloudinary.url(result.public_id, {
-      resource_type: "image",
-      format: "pdf",
-      flags: "inline",
-      transformation: [{ page: 1 }],
-      secure: true,
-    });
     const downloadUrl = result.secure_url;
     const newFile = await File.create({
       title,
       subject,
-      fileUrl:previewUrl, 
+      fileUrl:downloadUrl, 
       downloadUrl:downloadUrl,
-      publicId: result.public_id,
+      publicId: result.public_id, 
       uploadedBy: req.user._id,
     });
     res.status(201).json({
@@ -52,6 +44,7 @@ export const uploadFile = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
 export const getFiles = async (req, res) => {
   try {
     const files = await File.find()
@@ -75,13 +68,13 @@ export const getFiles = async (req, res) => {
   }
 };
 
-export const getFilesByUser = async (req, res) => {
+export const getMyUploads = async (req, res) => {
   try {
     const files = await File.find({ uploadedBy: req.user._id })
       .populate("uploadedBy", "name college")
       .sort({ createdAt: -1 });
 
-    if (!files || files.length === 0) {
+    if (files.length === 0) {
       return res.status(404).json({ message: "No files uploaded" });
     }
 

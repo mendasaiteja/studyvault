@@ -6,5 +6,6 @@ const verifyToken=((token)=>{
     }catch(error){
         console.log("Token verification failed",error.message);
     }
-})
+});
+
 export default verifyToken;
