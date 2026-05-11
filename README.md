@@ -157,7 +157,7 @@ await api.post("/files/upload", formData);
 
 The backend (Node.js + Express + MongoDB + Cloudinary) lives here:
 
-> [studyvault-backend](https://github.com/your-username/studyvault-backend)
+> [studyvault-backend](link will be provided short period of time)
 
 ---
 
