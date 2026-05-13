@@ -84,3 +84,12 @@ export const getMyUploads = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+export const filesCount=async(req,res)=>{
+  try{
+    const count=await File.countDocuments();
+    res.status(200).json({ count });
+  }catch(error){
+    res.status(500).json({ message: error.message });
+  }
+} 
