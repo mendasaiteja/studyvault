@@ -18,7 +18,6 @@ function Navbar() {
                 {
                     token ? (
                         <>
-                            <Link to="/upload" className='bg-blue-400 px-3 py-2 rounded'>Upload</Link>
                             <Link to="/myupload" className='bg-blue-400 px-3 py-2 rounded'>MyUpload</Link>
                             <button onClick={handleLogout} className='bg-blue-400 px-3 py-2 rounded'>Logout</button>
                         </>
