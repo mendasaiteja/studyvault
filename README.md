@@ -1,51 +1,87 @@
-# StudyVault — Frontend
+# StudyVault
 
-A React-based frontend for StudyVault, a platform where students can upload, browse, and download study materials like PDFs and documents.
+A full-stack platform where students can upload, browse, and download study materials like PDFs and documents.
+
+🔗 **Live Demo:** [https://studyvault-flame.vercel.app](https://studyvault-flame.vercel.app)
 
 ---
 
 ## Tech Stack
 
+### Frontend
 - **React** (Vite)
 - **React Router DOM** — client-side routing
 - **Axios** — API calls with automatic auth header injection
-- **Tailwind CSS** *(optional, swap with your preferred styling)*
+- **Tailwind CSS** — styling
+
+### Backend
+- **Node.js + Express** — REST API
+- **MongoDB + Mongoose** — database
+- **Cloudinary** — file storage
+- **JWT** — authentication
+- **Multer + Streamifier** — file upload handling
 
 ---
 
 ## Features
 
 - User registration and login with JWT authentication
-- Browse all uploaded study files (visible to guests too)
-- Upload PDF / DOCX / PPTX files with title and subject
-- View and download files
-- "My Uploads" page — see only your own uploaded files
+- Browse all uploaded study files (visible to guests)
+- Upload PDF / DOCX / PPTX / PPT / DOC files with title and subject
+- Download files (login required)
+- My Uploads page — view and delete your own uploaded files
 - Protected routes — redirects to login if not authenticated
+- Axios interceptor — auto attaches token + handles token expiry
+- About page with platform info
+- Responsive Navbar and Footer
 
 ---
 
 ## Project Structure
-
-```
-frontend/
-├── src/
-│   ├── api.js                  # Axios instance with auth interceptor
-│   ├── main.jsx
-│   ├── App.jsx                 # Routes setup
-│   ├── pages/
-│   │   ├── Register.jsx
-│   │   ├── Login.jsx
-│   │   ├── Home.jsx            # Browse all files
-│   │   ├── Upload.jsx          # Upload a new file
-│   │   ├── MyUploads.jsx       # Logged-in user's files
-│   │   └── FileDetail.jsx      # Preview + download a file
-│   └── components/
-│       └── ProtectedRoute.jsx  # Redirects to /login if no token
-├── .env
-├── index.html
-└── package.json
-```
-
+studyvault/
+├── frontend/
+│   ├── src/
+│   │   ├── Api/
+│   │   │   └── api.js               # Axios instance with interceptors
+│   │   ├── context/
+│   │   │   ├── AuthContext.jsx       # Auth state (token, login, logout)
+│   │   │   └── ProtectedRoute.jsx    # Redirects to /login if no token
+│   │   ├── Components/
+│   │   │   ├── Navbar.jsx
+│   │   │   ├── Footer.jsx
+│   │   │   └── fileUtils.jsx         # Theme + BookArt helpers
+│   │   ├── Pages/
+│   │   │   ├── Register.jsx
+│   │   │   ├── Login.jsx
+│   │   │   ├── Home.jsx              # Browse all files
+│   │   │   ├── Upload.jsx            # Upload a new file
+│   │   │   ├── Myupload.jsx          # Logged-in user's files
+│   │   │   └── About.jsx
+│   │   └── App.jsx
+│   ├── .env
+│   └── package.json
+│
+├── backend/
+│   ├── controllers/
+│   │   ├── authController.js
+│   │   └── fileController.js
+│   ├── middleware/
+│   │   ├── authMiddleware.js         # Protect routes (JWT verify)
+│   │   ├── uploadMiddleware.js       # Multer config
+│   │   └── protectgetFiles.js        # Optional auth for public routes
+│   ├── models/
+│   │   ├── User.models.js
+│   │   └── File.models.js
+│   ├── routes/
+│   │   ├── authRoutes.js
+│   │   └── fileRoutes.js
+│   ├── config/
+│   │   ├── db.js
+│   │   └── cloudinary.js
+│   ├── .env
+│   └── index.js
+│
+└── README.md
 ---
 
 ## Getting Started
@@ -53,127 +89,137 @@ frontend/
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/studyvault-frontend.git
-cd studyvault-frontend
+git clone https://github.com/mendasaiteja/studyvault.git
+cd studyvault
 ```
 
-### 2. Install dependencies
+### 2. Setup Backend
 
 ```bash
+cd backend
 npm install
 ```
 
-### 3. Set up environment variables
-
-Create a `.env` file in the root:
+Create a `.env` file inside `backend/`:
 
 ```env
-VITE_API_BASE_URL=http://localhost:5000/api
+MONGO_URL=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+PORT=3000
+CLOUD_NAME=your_cloudinary_cloud_name
+CLOUD_API_KEY=your_cloudinary_api_key
+CLOUD_API_SECRET=your_cloudinary_api_secret
+FRONTEND_URL=http://localhost:5173
 ```
 
-> Change the URL to your deployed backend when pushing to production.
+```bash
+node index.js
+```
 
-### 4. Start the development server
+### 3. Setup Frontend
+
+```bash
+cd frontend
+npm install
+```
+
+Create a `.env` file inside `frontend/`:
+
+```env
+VITE_API_BASE_URL=http://localhost:3000/api
+```
 
 ```bash
 npm run dev
 ```
 
-App runs at `http://localhost:5173` by default.
+App runs at `http://localhost:5173`
 
 ---
 
 ## Environment Variables
 
+### Backend
+
 | Variable | Description |
 |---|---|
-| `VITE_API_BASE_URL` | Base URL of the backend API |
+| `MONGO_URL` | MongoDB connection string |
+| `JWT_SECRET` | Secret key for JWT signing |
+| `PORT` | Server port |
+| `CLOUD_NAME` | Cloudinary cloud name |
+| `CLOUD_API_KEY` | Cloudinary API key |
+| `CLOUD_API_SECRET` | Cloudinary API secret |
+| `FRONTEND_URL` | Frontend URL for CORS |
 
----
+### Frontend
 
-## API Integration
-
-All API calls go through `src/api.js`:
-
-```js
-import axios from "axios";
-
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
-});
-
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
-  if (token) config.headers.Authorization = `Bearer ${token}`;
-  return config;
-});
-
-export default api;
-```
-
-The interceptor automatically attaches the JWT token to every request — no need to manually set headers in each page.
+| Variable | Description |
+|---|---|
+| `VITE_API_BASE_URL` | Backend API base URL |
 
 ---
 
 ## Pages and Routes
 
-| Route | Page | Auth required |
+| Route | Page | Auth Required |
 |---|---|---|
-| `/register` | Register | No |
+| `/` | Home — browse all files | No |
+| `/about` | About StudyVault | No |
 | `/login` | Login | No |
-| `/` | Home — all files | No (partial data) |
+| `/register` | Register | No |
 | `/upload` | Upload a file | Yes |
-| `/my-uploads` | My uploaded files | Yes |
-| `/files/:id` | File detail + download | Yes |
-
----
-
-## Uploading Files
-
-Files are sent as `multipart/form-data`. Do **not** set `Content-Type` manually — Axios sets it automatically when you pass a `FormData` object:
-
-```js
-const formData = new FormData();
-formData.append("title", title);
-formData.append("subject", subject);
-formData.append("file", selectedFile); // File object from input
-
-await api.post("/files/upload", formData);
-```
+| `/myupload` | My uploaded files | Yes |
 
 ---
 
 ## Authentication Flow
 
-1. User logs in → backend returns a JWT token
-2. Token is saved to `localStorage`
-3. Every subsequent API request includes `Authorization: Bearer <token>`
-4. On logout, token is removed from `localStorage`
-5. `ProtectedRoute` checks for the token and redirects to `/login` if missing
+1. User registers → credentials saved to MongoDB (passwords hashed with bcrypt)
+2. User logs in → backend returns JWT token
+3. Token saved to `localStorage`
+4. Every API request includes `Authorization: Bearer <token>`
+5. Token expiry → auto redirect to `/login`
+6. On logout → token removed from `localStorage`
 
 ---
 
-## Backend Repository
+## File Upload Flow
 
-The backend (Node.js + Express + MongoDB + Cloudinary) lives here:
+1. User selects file (PDF, DOC, DOCX, PPT, PPTX — max 50MB)
+2. File sent as `multipart/form-data` to backend
+3. Backend streams file to Cloudinary with `resource_type: "raw"`
+4. Cloudinary returns a secure URL
+5. File metadata saved to MongoDB
+6. Download URL served only to logged-in users
 
-> [studyvault-backend](link will be provided in short period of time)
+---
+
+## Deployment
+
+| Service | Platform |
+|---|---|
+| Frontend | [Vercel](https://vercel.com) |
+| Backend | [Render](https://render.com) |
+| Database | [MongoDB Atlas](https://cloud.mongodb.com) |
+| File Storage | [Cloudinary](https://cloudinary.com) |
 
 ---
 
 ## Scripts
 
+### Frontend
+
 | Command | Description |
 |---|---|
 | `npm run dev` | Start development server |
 | `npm run build` | Build for production |
-| `npm run preview` | Preview production build locally |
+| `npm run preview` | Preview production build |
 
----
+### Backend
 
-## Contributing
-
-Pull requests are welcome. For major changes, open an issue first to discuss what you'd like to change.
+| Command | Description |
+|---|---|
+| `node index.js` | Start server |
 
 ---
 
