@@ -38,24 +38,26 @@ A full-stack platform where students can upload, browse, and download study mate
 ---
 
 ## Project Structure
+
+```
 studyvault/
 ├── frontend/
 │   ├── src/
 │   │   ├── Api/
-│   │   │   └── api.js               # Axios instance with interceptors
+│   │   │   └── api.js
 │   │   ├── context/
-│   │   │   ├── AuthContext.jsx       # Auth state (token, login, logout)
-│   │   │   └── ProtectedRoute.jsx    # Redirects to /login if no token
+│   │   │   ├── AuthContext.jsx
+│   │   │   └── ProtectedRoute.jsx
 │   │   ├── Components/
 │   │   │   ├── Navbar.jsx
 │   │   │   ├── Footer.jsx
-│   │   │   └── fileUtils.jsx         # Theme + BookArt helpers
+│   │   │   └── fileUtils.jsx
 │   │   ├── Pages/
 │   │   │   ├── Register.jsx
 │   │   │   ├── Login.jsx
-│   │   │   ├── Home.jsx              # Browse all files
-│   │   │   ├── Upload.jsx            # Upload a new file
-│   │   │   ├── Myupload.jsx          # Logged-in user's files
+│   │   │   ├── Home.jsx
+│   │   │   ├── Upload.jsx
+│   │   │   ├── Myupload.jsx
 │   │   │   └── About.jsx
 │   │   └── App.jsx
 │   ├── .env
@@ -66,9 +68,9 @@ studyvault/
 │   │   ├── authController.js
 │   │   └── fileController.js
 │   ├── middleware/
-│   │   ├── authMiddleware.js         # Protect routes (JWT verify)
-│   │   ├── uploadMiddleware.js       # Multer config
-│   │   └── protectgetFiles.js        # Optional auth for public routes
+│   │   ├── authMiddleware.js
+│   │   ├── uploadMiddleware.js
+│   │   └── protectgetFiles.js
 │   ├── models/
 │   │   ├── User.models.js
 │   │   └── File.models.js
@@ -82,7 +84,7 @@ studyvault/
 │   └── index.js
 │
 └── README.md
----
+```
 
 ## Getting Started
 
