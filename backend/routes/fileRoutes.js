@@ -1,6 +1,6 @@
 import express from "express";
 import protect from "../middleware/authMiddleware.js";
-import upload from "../middleware/UploadMiddleware.js";
+import upload from "../middleware/uploadMiddleware.js";
 import protectgetFiles from "../middleware/protectgetFiles.js"
 import { deleteFile } from "../controllers/fileController.js";
 
