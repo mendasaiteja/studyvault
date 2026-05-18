@@ -1,7 +1,9 @@
 import express from "express";
 import protect from "../middleware/authMiddleware.js";
 import upload from "../middleware/UploadMiddleware.js";
-import protectgetFiles from "../middleware/protectgetFiles.js";
+import protectgetFiles from "../middleware/protectgetFiles.js"
+import { deleteFile } from "../controllers/fileController.js";
+
 import {
   getFiles,
   uploadFile,
@@ -18,5 +20,6 @@ router.get("/", protectgetFiles, getFiles);
 // files by user
 router.get("/my-uploads", protect, getMyUploads);
 router.get("/files-count", filesCount);
+router.delete("/:id", protect, deleteFile);
 
 export default router;

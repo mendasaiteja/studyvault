@@ -7,6 +7,9 @@ import Register from './Pages/Register'
 import Upload from './Pages/Upload'
 import Myupload from './Pages/Myupload'
 import Navbar from './Components/Navbar'
+import ProtectedRoute from './context/ProtectedRoute';
+import Footer from './Components/Footer';
+import About from './Pages/About';
 
 function App() {
   return (
@@ -14,12 +17,15 @@ function App() {
       <BrowserRouter>
         <Navbar />
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/"         element={<Home />} />
+          <Route path="/login"    element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/upload" element={<Upload />} />
-          <Route path="/myupload" element={<Myupload />} />
+          <Route path="/about" element={<About />} />
+
+          <Route path="/upload"   element={<ProtectedRoute><Upload /></ProtectedRoute>} />
+          <Route path="/myupload" element={<ProtectedRoute><Myupload /></ProtectedRoute>} />
         </Routes>
+        <Footer />
       </BrowserRouter>
     </AuthProvider>
   )

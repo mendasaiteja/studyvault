@@ -1,14 +1,17 @@
 import { useState, useEffect } from 'react';
-import { FileText, Users, Folder } from 'lucide-react';
+import { FileText, Users, Folder, CloudCog } from 'lucide-react';
 import api from "../Api/api.js";
 import Filecard from '../Components/Filecard.jsx';
 import { Navigate, useNavigate } from 'react-router-dom';
 import Upload from '../Components/Uploadbanner.jsx';
+import { useAuth } from '../context/AuthContext.jsx';
 
 function Home() {
   const [filecount, setFilecount] = useState(0);
   const [usercount, setUsercount] = useState(0);
-  const navigate=useNavigate();
+  const navigate = useNavigate();
+  const { islogged } = useAuth();
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -104,12 +107,16 @@ function Home() {
                     text-xl font-semibold px-8 py-3 rounded-xl 
                     cursor-pointer transition-colors duration-200
                     border border-[#6358cc]"
-                    onClick={Navigate("/login")}>
+              onClick={() => {
+                islogged ? navigate("/upload") : navigate("/login")
+              }
+              }
+            >
               Get Started
             </button>
           </div>
           <Filecard />
-          <Upload/>
+          <Upload />
         </div>
       </div>
     </>
