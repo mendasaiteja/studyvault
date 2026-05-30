@@ -13,10 +13,11 @@ import { uploadLimiter } from "../middleware/rateLimiter.js";
 
 import { filesCount } from "../controllers/fileController.js";
 import contentScreen from "../middleware/contentScreen.js";
+import viruScan from "../middleware/virusScan.js";
 
 const router = express.Router();
 
-router.post("/upload", protect, upload.single("file"), contentScreen, uploadFile);
+router.post("/upload", protect, upload.single("file"), contentScreen,viruScan, uploadFile);
 
 // all files
 router.get("/", protectgetFiles, getFiles);

@@ -8,7 +8,7 @@ const contentScreen=(req,res,next)=>{
     const title=req.body.title?.toLowerCase()||"";
     const filename=req.file?.originalname?.toLowerCase()||"";
     const isSpam=spamKeywords.some(
-        keyboard=>title.includes(keyword)||filename.includes(keyboard)
+        keyword=>title.includes(keyword)||filename.includes(keyword)
     );
     if(isSpam){
         return res.status(400).json({ message: "File rejected — looks like spam" });

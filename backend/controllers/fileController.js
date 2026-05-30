@@ -31,8 +31,8 @@ export const uploadFile = async (req, res) => {
     const downloadUrl = result.secure_url
       .replace("/image/upload/", "/raw/upload/");
 
-    console.log("result.secure_url:", result.secure_url);
-    console.log("downloadUrl:", downloadUrl);
+    // console.log("result.secure_url:", result.secure_url);
+    // console.log("downloadUrl:", downloadUrl);
 
     const newFile = await File.create({
       title,
