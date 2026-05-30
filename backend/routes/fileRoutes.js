@@ -9,10 +9,12 @@ import {
   uploadFile,
   getMyUploads
 } from "../controllers/fileController.js";
+import { uploadLimiter } from "../middleware/rateLimiter.js";
+
 import { filesCount } from "../controllers/fileController.js";
 const router = express.Router();
 
-router.post("/upload", protect, upload.single("file"), uploadFile);
+router.post("/upload", protect,uploadLimiter, upload.single("file"), uploadFile);
 
 // all files
 router.get("/", protectgetFiles, getFiles);
@@ -23,3 +25,4 @@ router.get("/files-count", filesCount);
 router.delete("/:id", protect, deleteFile);
 
 export default router;
+
