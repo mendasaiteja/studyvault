@@ -1,7 +1,7 @@
 import express from "express";
 import protect from "../middleware/authMiddleware.js";
 import upload from "../middleware/uploadMiddleware.js";
-import protectgetFiles from "../middleware/protectgetFiles.js"
+import protectgetFiles from "../middleware/protectgetfiles.js"
 import { deleteFile } from "../controllers/fileController.js";
 
 import {
@@ -9,12 +9,10 @@ import {
   uploadFile,
   getMyUploads
 } from "../controllers/fileController.js";
-import {uploadLimiter} from "../middleware/rateLimiter.js";
-
 import { filesCount } from "../controllers/fileController.js";
 const router = express.Router();
 
-router.post("/upload", protect,uploadLimiter, upload.single("file"), uploadFile);
+router.post("/upload", protect, upload.single("file"), uploadFile);
 
 // all files
 router.get("/", protectgetFiles, getFiles);

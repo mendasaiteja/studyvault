@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { FileText, Users, Folder, CloudCog } from 'lucide-react';
 import api from "../Api/api.js";
-import Filecard from '../Components/Filecard.jsx';
+import Filecard from '../Components/FileCard.jsx';
 import { Navigate, useNavigate } from 'react-router-dom';
 import Upload from '../Components/Uploadbanner.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
