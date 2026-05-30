@@ -1,4 +1,4 @@
-import rateLimit from "express-rate-Limit";
+import rateLimit from "express-rate-limit";
 
 export const uploadLimiter = rateLimit({
     max: 10,
